@@ -20,11 +20,24 @@ namespace linq_test_grouping
                 if(counter == 1)
                 {
                     teamId = item.TeamId;
+                  
+                    if(counter == data.Count())
+                    {
+                        dateperiod.Add(new DateGrouped { TeamId = item.TeamId, StartDate = item.Date, EndDate = item.Date });
+                    }
+
                     dateperiod.Add(new DateGrouped { TeamId = item.TeamId, StartDate = item.Date });
                 }
 
                 else
                 {
+                    if(item.TeamId == teamId && !IsConsecutiveDays(item.Date, previous.Date))
+                    {
+                        var lastItem = dateperiod.Last();
+                        lastItem.EndDate = previous.Date;
+
+                        dateperiod.Add(new DateGrouped { TeamId = item.TeamId, StartDate = item.Date, EndDate = item.Date });
+                    }
                     // compare current teamId
                     if (item.TeamId != teamId)
                     {
@@ -50,6 +63,14 @@ namespace linq_test_grouping
 
             return dateperiod;
            
+        }
+
+
+        private static bool IsConsecutiveDays(DateTime current, DateTime previous)
+        {
+            var yesterdatForCurrent = current.AddDays(-1);
+
+            return (yesterdatForCurrent == previous) ? true : false;
         }
     }
 
