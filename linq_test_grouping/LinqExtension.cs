@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -10,12 +10,14 @@ namespace linq_test_grouping
         {
             var dateperiod = new List<DateGrouped>();
             var teamId = 0;
-            var counter = 0;
+            var counter = 1;
             DataEntity previous = null;
+            var length = data.Count();
+
 
             data.ForEach(item =>
             {
-                if(counter == 0)
+                if(counter == 1)
                 {
                     teamId = item.TeamId;
                     dateperiod.Add(new DateGrouped { TeamId = item.TeamId, StartDate = item.Date });
@@ -31,8 +33,14 @@ namespace linq_test_grouping
                         var lastItem = dateperiod.Last();
                         lastItem.EndDate = previous.Date;
 
-                        dateperiod.Add(new DateGrouped { TeamId = item.TeamId, StartDate = item.Date });
-
+                        if(counter != length)
+                        {
+                            dateperiod.Add(new DateGrouped { TeamId = item.TeamId, StartDate = item.Date });
+                        }
+                        else
+                        {
+                            dateperiod.Add(new DateGrouped { TeamId = item.TeamId, StartDate = item.Date, EndDate =item.Date });
+                        }
                     }
                 }
 
