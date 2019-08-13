@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -26,19 +26,18 @@ namespace linq_test_grouping
             dateGrouped.ForEach(item =>
             {
                 var res = data
-                            .Where(x => x.Date <= item.StartDate && x.Date >= item.EndDate)
-                            
+                            .Where(x => x.Date >= item.StartDate && x.Date <= item.EndDate)
                             .ToList();
 
                 resultList.AddRange(res);
             });
 
-            foreach (var item in resultList.Distinct())
+            foreach (var item in resultList)
             {
                 Console.WriteLine($"TeamId: {item.TeamId} , Date: {item.Date}");
             }
 
-            Console.WriteLine($"Count: {resultList.Distinct().Count()}");
+            Console.WriteLine($"Count: {resultList.Count()}");
 
         }
     }
